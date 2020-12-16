@@ -3,11 +3,17 @@ const db = require('../../database/db-config');
 module.exports = {
     get,
     getById,
+    getBy,
     insert
   };
 
   function get() {
     return db('users');
+  }
+
+  function getBy(filter) {
+    return db("users").where(filter)
+      .orderBy("id");
   }
 
   function getById(id) {
@@ -16,10 +22,8 @@ module.exports = {
       .first();
   }
 
-  function insert(user) {
-    return db('users')
-      .insert(user)
-      .then(ids => {
-        return getById(ids[0]);
-      });
+  async function insert(user) {
+    const [id] = await db("users")
+      .insert(user, "id");
+      return getById(id);
   }

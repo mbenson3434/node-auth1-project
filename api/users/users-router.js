@@ -7,15 +7,17 @@ const restricted = (req, res, next) => {
     next()
   } else {
     res.status(401).json('unauthorized')
-  }
-}
+  };
+};
 
-router.get("/", restricted, (req, res) => {
+router.get("/users", restricted, (req, res) => {
   Users.get()
     .then(users => {
       res.status(200).json(users);
     })
     .catch(err => res.send(err));
 });
+
+
 
 module.exports = router;
